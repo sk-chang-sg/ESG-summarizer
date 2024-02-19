@@ -12,6 +12,7 @@ from abc import ABC, abstractmethod
 class LLMBase(ABC):
     def __init__(self) -> None:
         super().__init__()
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
 
     # Define on which transformer to use on each model
     @abstractmethod
@@ -19,7 +20,7 @@ class LLMBase(ABC):
         pass
 
 
-class SummurizerModel(LLMBase, nn.Module):
+class SumSeqModel(LLMBase, nn.Module):
     def __init__(self) -> None:
         super().__init__()
 
