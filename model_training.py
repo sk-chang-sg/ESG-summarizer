@@ -1,28 +1,33 @@
 import numpy as np
 import pandas as pd
 
-import torch
-import torch.nn as nn
-
-import transformers
-
+from dotenv import dotenv_values
 from abc import ABC, abstractmethod
+
+# Lang chain packages
+from langchain_community.llms.huggingface_endpoint import HuggingFaceEndpoint
+from langchain.chains.summarize import load_summarize_chain
+from langchain.prompts import PromptTemplate
+
+config = dotenv_values(".env")
 
 
 class LLMBase(ABC):
     def __init__(self) -> None:
         super().__init__()
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
-
-    # Define on which transformer to use on each model
-    @abstractmethod
-    def model_origin(self) -> None:
-        pass
 
 
-class SumSeqModel(LLMBase, nn.Module):
+class SumSeqModel(LLMBase):
     def __init__(self) -> None:
         super().__init__()
+        self.hf = HuggingFaceEndpoint(
+            repo_id="https://api-inference.huggingface.co/models/Falconsai/text_summarization",
+            huggingfacehub_api_token=config["HF_API_KEY"],
+        )
+        self.prompt = PromptTemplate.from_template("Summarize this text: {text}")
 
-    def model_origin(self) -> None:
-        return super().model_origin()
+    def summarize(self, text_input) -> str:
+        # text_out = load_summarize_chain(self.hf, chain_type="map_reduce")
+
+
+        return text_out.invoke({"text:_input)
