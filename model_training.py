@@ -27,7 +27,6 @@ class SumSeqModel(LLMBase):
         self.prompt = PromptTemplate.from_template("Summarize this text: {text}")
 
     def summarize(self, text_input) -> str:
-        # text_out = load_summarize_chain(self.hf, chain_type="map_reduce")
+        text_out = load_summarize_chain(self.hf, chain_type="map_reduce")
 
-
-        return text_out.invoke({"text:_input)
+        return text_out.invoke({"text_input"})
